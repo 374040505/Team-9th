@@ -1,0 +1,44 @@
+#define ADpin A0
+#define led 11
+#define in 12
+#define out 13
+#define T 10
+int a[]={0,0};
+int b[]={0,0};
+int x1=300;   //阈值1
+int numdata;
+bool start=false;
+int i=0;
+
+void setup() {
+  // put your setup code here, to run once:
+   pinMode(led,OUTPUT);
+   pinMode(in,INPUT);
+   pinMode(out, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+   numdata = digitalRead(in);   
+   //判断传输是否开始
+if(numdata==1){
+      start=true;
+    }
+    
+   if(start)
+   {
+    //传输数据   
+a[0]=numdata;
+do {
+        for(i=0;i<2;i++){
+             if (a[i]==1)digitalWrite(led, HIGH);
+             else if (a[i]==0)digitalWrite(led, LOW);
+             delay(5);
+             b[i]=analogRead(ADpin);
+         }         
+      }  while (b[1]>x1);
+if (b[0]>x1) digitalWrite(out, HIGH); 
+if (b[0]<x1) digitalWrite(out, LOW); 
+}
+ delay(T);
+}
